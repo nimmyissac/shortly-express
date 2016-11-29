@@ -2,6 +2,7 @@ var express = require('express');
 var util = require('./lib/utility');
 var partials = require('express-partials');
 var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 
 var db = require('./app/config');
@@ -12,6 +13,7 @@ var Link = require('./app/models/link');
 var Click = require('./app/models/click');
 
 var app = express();
+app.use(cookieParser());
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -24,10 +26,11 @@ app.use(express.static(__dirname + '/public'));
 
 
 app.get('/', function(req, res) {
+  console.log(req.cookies);
   // check if user has cookie
   if (req.get('Cookie') !== 'cookie testing') {
     // render login
-    res.set('Cookie', 'cookie testing');
+    res.set('Set-Cookie', 'cookie=testing');
     res.render('login');
     // (after user inputs credentials) insert user into users table
       // *in callback* set cookie for the user (if the login successful)
