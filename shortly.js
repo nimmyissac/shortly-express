@@ -23,9 +23,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/', 
-function(req, res) {
-  res.render('index');
+app.get('/', function(req, res) {
+  // check if user has cookie
+  if (req.get('Cookie') !== 'cookie testing') {
+    // render login
+    res.set('Cookie', 'cookie testing');
+    res.render('login');
+    // (after user inputs credentials) insert user into users table
+      // *in callback* set cookie for the user (if the login successful)
+  } else {
+    // render index
+    res.render('index'); 
+  }
 });
 
 app.get('/create', 
@@ -73,10 +82,29 @@ function(req, res) {
   });
 });
 
+
 /************************************************************/
 // Write your authentication routes here
 /************************************************************/
 
+app.post('/login', function(req, res) {
+  console.log('req.body', req.body);
+  new User({ username: req.body.username, password: req.body.password }).fetch().then(function(found) {
+    if (found) {
+      console.log('FOUND');
+      res.redirect('/index');
+      //res.status(200).send(found.attributes);
+    } else {
+      //do something
+      console.log("Not found");
+    }
+  })
+});
+
+app.get('/index', function (req, res) {
+  console.log("index Request");
+  res.render('index');
+});
 
 
 /************************************************************/
