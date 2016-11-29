@@ -13,11 +13,11 @@ var Link = require('../app/models/link');
 // Remove the 'x' from beforeEach block when working on
 // authentication tests.
 /************************************************************/
-var xbeforeEach = function() {};
+var beforeEach = function() {};
 /************************************************************/
 
 
-describe('', function() {
+describe('thisS IS EMPTY', function() {
 
   beforeEach(function() {
     // log out currently signed in user
@@ -63,8 +63,9 @@ describe('', function() {
 
     var requestWithSession = request.defaults({jar: true});
 
-    xbeforeEach(function(done) {
+    beforeEach(function(done) {
       // create a user that we can then log-in with
+      console.log('IM RUNNIGN')
       new User({
         'username': 'Phillip',
         'password': 'Phillip'
@@ -154,19 +155,31 @@ describe('', function() {
 
       var link;
 
-      beforeEach(function(done) {
-        // save a link to the database
+
+      // beforeEach(function(done) {
+      //   // save a link to the database
+      //   link = new Link({
+      //     url: 'http://roflzoo.com/',
+      //     title: 'Funny pictures of animals, funny dog pictures',
+      //     baseUrl: 'http://127.0.0.1:4568'
+      //   });
+      //   link.save().then(function() {
+      //     done();
+      //   });
+      // });
+
+
+      it('Returns the same shortened code', function(done) {
+
+        //beforeeach stuff
         link = new Link({
           url: 'http://roflzoo.com/',
           title: 'Funny pictures of animals, funny dog pictures',
           baseUrl: 'http://127.0.0.1:4568'
         });
         link.save().then(function() {
-          done();
         });
-      });
 
-      it('Returns the same shortened code', function(done) {
         var options = {
           'method': 'POST',
           'followAllRedirects': true,
@@ -197,6 +210,16 @@ describe('', function() {
       });
 
       it('Returns all of the links to display on the links page', function(done) {
+        
+        //beforeeach stuff
+        link = new Link({
+          url: 'http://roflzoo.com/',
+          title: 'Funny pictures of animals, funny dog pictures',
+          baseUrl: 'http://127.0.0.1:4568'
+        });
+        link.save().then(function() {
+        });
+
         var options = {
           'method': 'GET',
           'uri': 'http://127.0.0.1:4568/links'
@@ -213,10 +236,11 @@ describe('', function() {
 
   }); // 'Link creation'
 
-  xdescribe('Privileged Access:', function() {
+  describe('Privileged Access:', function() {
 
     it('Redirects to login page if a user tries to access the main page and is not signed in', function(done) {
       request('http://127.0.0.1:4568/', function(error, res, body) {
+        console.log('path', res.req.path)
         expect(res.req.path).to.equal('/login');
         done();
       });

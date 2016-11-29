@@ -46,6 +46,7 @@ function(req, res) {
 
   if (!util.isValidUrl(uri)) {
     console.log('Not a valid url: ', uri);
+    //console.log('RESPONSE', res);
     return res.sendStatus(404);
   }
 
@@ -55,7 +56,7 @@ function(req, res) {
     } else {
       util.getUrlTitle(uri, function(err, title) {
         if (err) {
-          console.log('Error reading URL heading: ', err);
+          console.log('Error reading URL heading !!!!: ', err);
           return res.sendStatus(404);
         }
 
